@@ -11,6 +11,11 @@ var topics = ["Movies", "TV Shows", "Entertainment", "Politics", "Science", "Mil
 
 var queryURL = "http://api.giphy.com/v1/gifs/search?q=movies&api_key=dc6zaTOxFJmzC"
 
+$(document).ready(function(){
+    renderButtons();
+});
+
+
 $.ajax({
     url: queryURL,
     method: 'GET'
