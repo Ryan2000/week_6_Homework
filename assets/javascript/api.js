@@ -35,6 +35,7 @@ $(document).ready(function () {
         renderButtons();
     });
 
+    pauseGifs();
 });
 
 
@@ -78,16 +79,13 @@ function updateClickListeners() {
                 counter++;
 
 
-                img.attr('src', response.data[i].images.fixed_height.url);
-                console.log('Image URL is ' + response.data[i].images.fixed_height.url);
-                images.push(img);
-
-                $(img).attr("src", $(img).attr("data-still"));
+                img.attr('src', response.data[i].images.fixed_height_still.url);
+                img.attr('data-still', response.data[i].images.fixed_height_still.url );
+                img.attr('data-animate', response.data[i].images.fixed_height.url);
                 $(img).attr("data-state", "still");
 
             }
 
-            pauseGifs();
         });
     });
 }
@@ -125,7 +123,7 @@ function pauseGifs() {
         // If the clicked image's state is still, update its src attribute to what its data-animate value is.
         // Then, set the image's data-state to animate
         // Else set src to the data-still value
-        if (state === "still") {
+        if (state === "still" || state === undefined) {
             $(this).attr("src", $(this).attr("data-animate"));
             $(this).attr("data-state", "animate");
         } else {
