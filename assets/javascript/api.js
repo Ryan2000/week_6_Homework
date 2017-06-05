@@ -53,6 +53,7 @@ function updateClickListeners() {
             method: 'GET'
         }).done(function (response) {
             console.log('ajax finished');
+            $('.buffer').empty();
 
 
             var length = response.data.length;
@@ -74,14 +75,16 @@ function updateClickListeners() {
 
                 var label = $("#rating-" + counter).text("Rating: " + rating)  //TODO: Select the <p> tag that goes with this <img> tag
                 //TODO: Update the text of this label with the rating
-
-
+                
                 counter++;
 
                 img.attr('src', response.data[i].images.fixed_height_still.url);
                 img.attr('data-still', response.data[i].images.fixed_height_still.url );
                 img.attr('data-animate', response.data[i].images.fixed_height.url);
-                $(img).attr("data-state", "still");
+
+                var cloned = $(img).clone();
+                cloned.attr('src', response.data[i].images.fixed_height.url);
+                $('.buffer').append(cloned);
             }
         });
     });
@@ -130,26 +133,4 @@ function pauseGifs() {
     });
 }
 
-//
-// $.ajax({
-//     url: queryURL,
-//     method: 'GET'
-//     //.done(function(response) {
-//     //console.log(response.data[0].embed_url);
-//
-// }).done(function(response) {
-//     var images = $(".images");
-//     var length = response.data.length;
-//
-//
-//     for ( var i = 0; i < length; i++) {
-//         var img = $('<img>');
-//         img.attr('src', response.data[i].images.fixed_height.url);
-//         images.append(img);
-//     }
-// });
-
-
-// Adding a click event listener to all elements with a class of "movie"
-//$(document).on("click", ".topics" );
 
