@@ -77,15 +77,12 @@ function updateClickListeners() {
 
 
                 counter++;
-
-
+                
                 img.attr('src', response.data[i].images.fixed_height_still.url);
                 img.attr('data-still', response.data[i].images.fixed_height_still.url );
                 img.attr('data-animate', response.data[i].images.fixed_height.url);
                 $(img).attr("data-state", "still");
-
             }
-
         });
     });
 }
