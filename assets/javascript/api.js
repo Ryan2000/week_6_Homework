@@ -38,76 +38,102 @@ $(document).ready(function () {
 });
 
 
-    function updateClickListeners() {
-        $(".topic").click(function () {
-            var btn = $(this); //now we know what button they pressed
-            var txt = $(this).text(); // Trying to get the button's text
+function updateClickListeners() {
+    $(".topic").click(function () {
+        var btn = $(this); //now we know what button they pressed
+        var txt = $(this).text(); // Trying to get the button's text
 
 
-            var query = queryURL + txt + api_key;
-            console.log(query); //to test...
-            //do ajax from this point...
-            $.ajax({
-                url: query,
-                method: 'GET'
-            }).done(function (response) {
-                console.log('ajax finished');
+        var query = queryURL + txt + api_key;
+        console.log(query); //to test...
+        //do ajax from this point...
+        $.ajax({
+            url: query,
+            method: 'GET'
+        }).done(function (response) {
+            console.log('ajax finished');
 
 
-                var length = response.data.length;
-                console.log('Number of images retured was ' + length);
+            var length = response.data.length;
+            console.log('Number of images retured was ' + length);
 
 
-                //create a counter variable that starts at 1
-                var counter = 1;
+            //create a counter variable that starts at 1
+            var counter = 1;
 
 
-                //enter a for loop that ends at lenght or 12, which ever comes first
-                for (var i = 0; i < response.data.length; i++) {
-                    var img = $('#img-' + counter);
-                    $( img ).removeClass( "hidden" );
+            //enter a for loop that ends at lenght or 12, which ever comes first
+            for (var i = 0; i < response.data.length; i++) {
+                var img = $('#img-' + counter);
+                $(img).removeClass("hidden");
 
-                    // Storing the result item's rating
-                    var rating = response.data[i].rating;
-
-
-                    var label = $("#rating-" + counter).text("Rating: " + rating)  //TODO: Select the <p> tag that goes with this <img> tag
-                    //TODO: Update the text of this label with the rating
+                // Storing the result item's rating
+                var rating = response.data[i].rating;
 
 
-                    counter++;
-                    img.attr('src', response.data[i].images.fixed_height.url);
-                    console.log('Image URL is ' + response.data[i].images.fixed_height.url);
-                    images.append(img);
-                }
-            });
+                var label = $("#rating-" + counter).text("Rating: " + rating)  //TODO: Select the <p> tag that goes with this <img> tag
+                //TODO: Update the text of this label with the rating
+
+
+                counter++;
+
+
+                img.attr('src', response.data[i].images.fixed_height.url);
+                console.log('Image URL is ' + response.data[i].images.fixed_height.url);
+                images.push(img);
+
+                $(img).attr("src", $(img).attr("data-still"));
+                $(img).attr("data-state", "still");
+
+            }
+
+            pauseGifs();
         });
+    });
+}
+
+function renderButtons() {
+
+    // Deleting the topic buttons
+    // (this is necessary otherwise you will have repeat buttons)
+    $("#buttons-view").empty();
+
+    // Looping through the array of movies
+    for (var i = 0; i < topics.length; i++) {
+
+        // Then dynamically generating buttons for each movie in the array
+        // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
+        var a = $("<button>");
+        // Adding a class of movie to our button
+        a.addClass("topic btn");
+        // Adding a data-attribute
+        a.attr("data-name", topics[i]);
+        // Providing the initial button text
+        a.text(topics[i]);
+        // Adding the button to the buttons-view div
+        $("#buttons-view").append(a);
     }
+    //Add this too!
+    updateClickListeners();
+}
 
-    function renderButtons() {
 
-        // Deleting the topic buttons
-        // (this is necessary otherwise you will have repeat buttons)
-        $("#buttons-view").empty();
-
-        // Looping through the array of movies
-        for (var i = 0; i < topics.length; i++) {
-
-            // Then dynamically generating buttons for each movie in the array
-            // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
-            var a = $("<button>");
-            // Adding a class of movie to our button
-            a.addClass("topic btn");
-            // Adding a data-attribute
-            a.attr("data-name", topics[i]);
-            // Providing the initial button text
-            a.text(topics[i]);
-            // Adding the button to the buttons-view div
-            $("#buttons-view").append(a);
+function pauseGifs() {
+    $('img').on("click", function () {
+        // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
+        var state = $(this).attr("data-state");
+        // If the clicked image's state is still, update its src attribute to what its data-animate value is.
+        // Then, set the image's data-state to animate
+        // Else set src to the data-still value
+        if (state === "still") {
+            $(this).attr("src", $(this).attr("data-animate"));
+            $(this).attr("data-state", "animate");
+        } else {
+            $(this).attr("src", $(this).attr("data-still"));
+            $(this).attr("data-state", "still");
         }
-        //Add this too!
-        updateClickListeners();
-    }
+    });
+}
 
 //
 // $.ajax({
