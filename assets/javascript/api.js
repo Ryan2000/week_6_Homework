@@ -11,7 +11,7 @@ var topics = ["Movies", "TV Shows", "Entertainment", "Politics", "Science", "Mil
 
 var images = [];
 
-var queryURL = "https://api.giphy.com/v1/gifs/search?rating(g,pg,pg-13,r)&limit=12&q="
+var queryURL = "https://api.giphy.com/v1/gifs/search?rating(g,pg,pg-13,r)&limit=10&q="
 var api_key = "&api_key=dc6zaTOxFJmzC"
 
 
