@@ -49,15 +49,24 @@ $(document).ready(function(){
         }).done(function(response){
             console.log('ajax finished');
 
-            var images = $(".images");
+            //var images = $(".images"); Not needed
             var length = response.data.length;
 
+            //create a counter variable that starts at 1
+            var counter = 1;
+            //enter a for loop that ends at lenght or 12, which ever comes first
+            for (var i = 0; i <response.data.length; i++) {
+                var img = $('#img-' + counter);
+                counter++;
+                img.attr('src', response.data[i].images.fixed_height.url);
+                //images.append(img); I think we will need this later so I'm commenting it out for now
+            }
         });
     });
 });
 
 
-// Function for displaying movie data
+
 function renderButtons() {
 
     // Deleting the movies prior to adding new movies
